@@ -7,120 +7,95 @@
 //
 
 import UIKit
-import QuartzCore
+//import QuartzCore
 import SceneKit
 
 class GameViewController: UIViewController {
 
+    var scnView: SCNView!
+    var scnScene: SCNScene!
+    var cameraNode: SCNNode! //property for camera
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        setUpView()
+        setupScene()
+        setupCamera()
+        spawnShape()
         
-        // create a new scene
-        let scene = SCNScene(named: "art.scnassets/ship.scn")!
-        
-        // create and add a camera to the scene
-        let cameraNode = SCNNode()
-        cameraNode.camera = SCNCamera()
-        scene.rootNode.addChildNode(cameraNode)
-        
-        // place the camera
-        cameraNode.position = SCNVector3(x: 0, y: 0, z: 15)
-        
-        // create and add a light to the scene
-        let lightNode = SCNNode()
-        lightNode.light = SCNLight()
-        lightNode.light!.type = .omni
-        lightNode.position = SCNVector3(x: 0, y: 10, z: 10)
-        scene.rootNode.addChildNode(lightNode)
-        
-        // create and add an ambient light to the scene
-        let ambientLightNode = SCNNode()
-        ambientLightNode.light = SCNLight()
-        ambientLightNode.light!.type = .ambient
-        ambientLightNode.light!.color = UIColor.darkGray
-        scene.rootNode.addChildNode(ambientLightNode)
-        
-        // retrieve the ship node
-        let ship = scene.rootNode.childNode(withName: "ship", recursively: true)!
-        
-        // animate the 3d object
-        ship.runAction(SCNAction.repeatForever(SCNAction.rotateBy(x: 0, y: 2, z: 0, duration: 1)))
-        
-        // retrieve the SCNView
-        let scnView = self.view as! SCNView
-        
-        // set the scene to the view
-        scnView.scene = scene
-        
-        // allows the user to manipulate the camera
-        scnView.allowsCameraControl = true
-        
-        // show statistics such as fps and timing information
-        scnView.showsStatistics = true
-        
-        // configure the view
-        scnView.backgroundColor = UIColor.black
-        
-        // add a tap gesture recognizer
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap(_:)))
-        scnView.addGestureRecognizer(tapGesture)
-    }
-    
-    @objc
-    func handleTap(_ gestureRecognize: UIGestureRecognizer) {
-        // retrieve the SCNView
-        let scnView = self.view as! SCNView
-        
-        // check what nodes are tapped
-        let p = gestureRecognize.location(in: scnView)
-        let hitResults = scnView.hitTest(p, options: [:])
-        // check that we clicked on at least one object
-        if hitResults.count > 0 {
-            // retrieved the first clicked object
-            let result = hitResults[0]
-            
-            // get its material
-            let material = result.node.geometry!.firstMaterial!
-            
-            // highlight it
-            SCNTransaction.begin()
-            SCNTransaction.animationDuration = 0.5
-            
-            // on completion - unhighlight
-            SCNTransaction.completionBlock = {
-                SCNTransaction.begin()
-                SCNTransaction.animationDuration = 0.5
-                
-                material.emission.contents = UIColor.black
-                
-                SCNTransaction.commit()
-            }
-            
-            material.emission.contents = UIColor.red
-            
-            SCNTransaction.commit()
-        }
     }
     
     override var shouldAutorotate: Bool {
         return true
     }
     
-    override var prefersStatusBarHidden: Bool {
+    override var prefersStatusBarHidden: Bool{
         return true
     }
     
-    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
-        if UIDevice.current.userInterfaceIdiom == .phone {
-            return .allButUpsideDown
-        } else {
-            return .all
-        }
+    func setUpView() {
+        scnView = self.view as! SCNView //cast self.view to a SCNView and store it in the scnView property so you don’t have to re-cast it every time you need to reference the view in Main.storyboard
+        
+        scnView.showsStatistics = true //showStatistics enables a real-time statistics panel at the bottom of your scene
+        scnView.allowsCameraControl = true //allowsCameraControl lets you manually control the active camera through simple gestures. Single finger swipe, two finger swipe, two finger pinch, and double tap
+        scnView.autoenablesDefaultLighting = true //autoenablesDefaultLighting creates a generic omnidirectional light in your scene so you don’t have to worry about adding your own light sources
     }
     
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Release any cached data, images, etc that aren't in use.
+    func setupScene() {
+        scnScene = SCNScene() //creates a new blank instance of SCNScene and stores it in scnScene
+        scnView.scene = scnScene //sets this blank scene as the one for scnView to use
+        
+        scnScene.background.contents = "GeometryFighter.scnassets/Textures/Background_Diffuse.png" //sets background to an image selected from a folder
+    }
+    
+    func setupCamera() {
+        cameraNode = SCNNode() //First, you create an empty SCNNode and assign it to cameraNode.
+        cameraNode.camera = SCNCamera() //Next, you create a new SCNCamera object and assign it to the camera property of cameraNode.
+        cameraNode.position = SCNVector3(x: 0, y: 5, z: 10) //Then, you set the position of the camera.
+        scnScene.rootNode.addChildNode(cameraNode) //Finally, you add cameraNode to the scene as a child node of the scene’s root node.
+        
+    }
+    
+    func spawnShape() {
+        var geometry: SCNGeometry //create a placeholder geometry variable
+        switch ShapeType.random() { //define a switch statement to handle the returned shape from ShapeType.random()
+        case .box:
+            geometry = SCNBox(width: 1.0, height: 1.0, length: 1.0, chamferRadius: 0.0)
+        case .sphere:
+            geometry = SCNSphere(radius: 0.5)
+        case .pyramid:
+            geometry = SCNPyramid(width: 1.0, height: 1.0, length: 1.0)
+        case .torus:
+            geometry = SCNTorus(ringRadius: 0.5, pipeRadius: 0.25)
+        case .capsule:
+            geometry = SCNCapsule(capRadius: 0.3, height: 2.5)
+        case .cylinder:
+            geometry = SCNCylinder(radius: 0.3, height: 2.5)
+        case .cone:
+            geometry = SCNCone(topRadius: 0.25, bottomRadius: 0.5, height: 1.0)
+        case .tube:
+            geometry = SCNTube(innerRadius: 0.25, outerRadius: 0.5, height: 1.0)
+        //default: HAVE TO BE COMMENTED OUT AS DEFAULT WILL NEVER BE EXECUTED
+            //geometry = SCNBox(width: 1.0, height: 1.0, length: 1.0, chamferRadius: 0.0) //create an SCNBox object and store it in geometry. You specify the width, height and length, along with the chamfer radius (which is a fancy way of saying rounded corners)
+        }
+        
+        geometry.materials.first?.diffuse.contents = UIColor.random()//generates random color
+        
+        let geometryNode = SCNNode(geometry: geometry) // you create an instance of SCNNode named geometryNode. This time, you make use of the SCNNode initializer which takes a geometry parameter to create a node and automatically attach the supplied geometry.
+        geometryNode.physicsBody = SCNPhysicsBody(type: .dynamic, shape: nil) //to add a physicsBody to the node with its specified type and shape
+        
+        //1 creates two random float values that represent the x- and y-components of the force
+        let randomX = Float.random(min: -2, max: 2)
+        let randomY = Float.random(min: 10, max: 18)
+        //2 use those random components to create a vector to represent this force
+        let force = SCNVector3(x: randomX, y: randomY, z: 0)
+        //3 creates another vector that represents the position to which the force will be applied. The position is slightly off-center so as to create a spin on the object.
+        let position = SCNVector3(x: 0.05, y: 0.05, z: 0.05)
+        //4 apply the force to geometryNode’s physics body using applyForce(direction: at: asImpulse:).
+        geometryNode.physicsBody?.applyForce(force, at: position, asImpulse: true)
+        
+        scnScene.rootNode.addChildNode(geometryNode) //add the node
+        //Dont forget to call it in the viewDidLoad()
     }
 
 }
