@@ -84,8 +84,8 @@ class GameViewController: UIViewController {
         //default: HAVE TO BE COMMENTED OUT AS DEFAULT WILL NEVER BE EXECUTED
             //geometry = SCNBox(width: 1.0, height: 1.0, length: 1.0, chamferRadius: 0.0) //create an SCNBox object and store it in geometry. You specify the width, height and length, along with the chamfer radius (which is a fancy way of saying rounded corners)
         }
-        
-        geometry.materials.first?.diffuse.contents = UIColor.random()//generates a random color and attaching it to geometry
+        let color = UIColor.random()//generates a random color and attaching it to geometry
+        geometry.materials.first?.diffuse.contents = color//sets the random color created to the geometryNode
         
         let geometryNode = SCNNode(geometry: geometry) // you create an instance of SCNNode named geometryNode. This time, you make use of the SCNNode initializer which takes a geometry parameter to create a node and automatically attach the supplied geometry.
         geometryNode.physicsBody = SCNPhysicsBody(type: .dynamic, shape: nil) //to add a physicsBody to the node with its specified type and shape
@@ -100,6 +100,9 @@ class GameViewController: UIViewController {
         //4 apply the force to geometryNode’s physics body using applyForce(direction: at: asImpulse:).
         geometryNode.physicsBody?.applyForce(force, at: position, asImpulse: true)
         
+        let trailEmitter = createTrail(color: color, geometry: geometry)//create a particle system
+        geometryNode.addParticleSystem(trailEmitter)//attach it to the geometryNode
+        
         scnScene.rootNode.addChildNode(geometryNode) //add the node
         //Dont forget to call it in the viewDidLoad()
     }
@@ -113,6 +116,14 @@ class GameViewController: UIViewController {
                 node.removeFromParentNode()
             }
         }
+    }//end of cleanScene method
+    
+    //1defines createTrail(_: geometry:) which takes in color and geometry parameters to set up the particle system
+    func createTrail(color: UIColor, geometry: SCNGeometry) -> SCNParticleSystem{
+        let trail = SCNParticleSystem(named: "Trail.scnp", inDirectory: nil)! //2 loads the particle system from the file you created earlier
+        trail.particleColor = color //3 modify the particle’s tint color based on the parameter passed in.
+        trail.emitterShape = geometry //4 uses the geometry parameter to specify the emitter’s shape
+        return trail //5 returns newly created particle system
     }
 
 }

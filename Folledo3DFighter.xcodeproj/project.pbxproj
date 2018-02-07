@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		CD0137D7202A383200E934D0 /* spark.png in Resources */ = {isa = PBXBuildFile; fileRef = CD0137D5202A383200E934D0 /* spark.png */; };
+		CD0137D8202A383200E934D0 /* Trail.scnp in Resources */ = {isa = PBXBuildFile; fileRef = CD0137D6202A383200E934D0 /* Trail.scnp */; };
 		CD073D831FEC7DE3007B4B33 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD073D821FEC7DE3007B4B33 /* AppDelegate.swift */; };
 		CD073D871FEC7DE3007B4B33 /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD073D861FEC7DE3007B4B33 /* GameViewController.swift */; };
 		CD073D8A1FEC7DE3007B4B33 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CD073D881FEC7DE3007B4B33 /* Main.storyboard */; };
@@ -24,6 +26,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		CD0137D5202A383200E934D0 /* spark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = spark.png; path = ../../../../Documents/spark.png; sourceTree = "<group>"; };
+		CD0137D6202A383200E934D0 /* Trail.scnp */ = {isa = PBXFileReference; lastKnownFileType = file.scp; name = Trail.scnp; path = ../../../../Documents/Trail.scnp; sourceTree = "<group>"; };
 		CD073D7F1FEC7DE3007B4B33 /* Folledo3DFighter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Folledo3DFighter.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CD073D821FEC7DE3007B4B33 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CD073D861FEC7DE3007B4B33 /* GameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewController.swift; sourceTree = "<group>"; };
@@ -53,9 +57,19 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		CD0137D2202A370200E934D0 /* Particles */ = {
+			isa = PBXGroup;
+			children = (
+				CD0137D5202A383200E934D0 /* spark.png */,
+				CD0137D6202A383200E934D0 /* Trail.scnp */,
+			);
+			path = Particles;
+			sourceTree = "<group>";
+		};
 		CD073D761FEC7DE3007B4B33 = {
 			isa = PBXGroup;
 			children = (
+				CD0137D2202A370200E934D0 /* Particles */,
 				CD073D811FEC7DE3007B4B33 /* Folledo3DFighter */,
 				CD073D801FEC7DE3007B4B33 /* Products */,
 			);
@@ -158,9 +172,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CD0137D7202A383200E934D0 /* spark.png in Resources */,
 				CD073D8F1FEC7DE3007B4B33 /* LaunchScreen.storyboard in Resources */,
 				CD073D8C1FEC7DE3007B4B33 /* Assets.xcassets in Resources */,
 				CD073D8A1FEC7DE3007B4B33 /* Main.storyboard in Resources */,
+				CD0137D8202A383200E934D0 /* Trail.scnp in Resources */,
 				CDD18B2D1FF179EF00A1B622 /* GeometryFighter.scnassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
