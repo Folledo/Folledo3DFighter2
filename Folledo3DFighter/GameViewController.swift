@@ -16,6 +16,7 @@ class GameViewController: UIViewController {
     var scnScene: SCNScene!
     var cameraNode: SCNNode! //property for camera
     var spawnTime: TimeInterval = 0
+    var game = GameHelper.sharedInstance
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -23,6 +24,8 @@ class GameViewController: UIViewController {
         setupScene()
         setupCamera()
         spawnShape()
+        
+        setupHUD()
         
     }
     
@@ -38,7 +41,7 @@ class GameViewController: UIViewController {
         scnView = self.view as! SCNView //cast self.view to a SCNView and store it in the scnView property so you don’t have to re-cast it every time you need to reference the view in Main.storyboard
         
         scnView.showsStatistics = true //showStatistics enables a real-time statistics panel at the bottom of your scene
-        scnView.allowsCameraControl = true //allowsCameraControl lets you manually control the active camera through simple gestures. Single finger swipe, two finger swipe, two finger pinch, and double tap
+        scnView.allowsCameraControl = false //allowsCameraControl lets you manually control the active camera through simple gestures. Single finger swipe, two finger swipe, two finger pinch, and double tap
         scnView.autoenablesDefaultLighting = true //autoenablesDefaultLighting creates a generic omnidirectional light in your scene so you don’t have to worry about adding your own light sources
         
         scnView.delegate = self //this sets the delegate of the SceneKit view to self. Now the view can call the delegate methods you implement in GameViewController when the render loop runs.
@@ -103,6 +106,12 @@ class GameViewController: UIViewController {
         let trailEmitter = createTrail(color: color, geometry: geometry)//create a particle system
         geometryNode.addParticleSystem(trailEmitter)//attach it to the geometryNode
         
+        if color == UIColor.black {
+            geometryNode.name = "BAD"
+        } else {
+            geometryNode.name = "GOOD"
+        }
+        
         scnScene.rootNode.addChildNode(geometryNode) //add the node
         //Dont forget to call it in the viewDidLoad()
     }
@@ -118,12 +127,55 @@ class GameViewController: UIViewController {
         }
     }//end of cleanScene method
     
-    //1defines createTrail(_: geometry:) which takes in color and geometry parameters to set up the particle system
+    //1 defines createTrail(_: geometry:) which takes in color and geometry parameters to set up the particle system
     func createTrail(color: UIColor, geometry: SCNGeometry) -> SCNParticleSystem{
         let trail = SCNParticleSystem(named: "Trail.scnp", inDirectory: nil)! //2 loads the particle system from the file you created earlier
         trail.particleColor = color //3 modify the particle’s tint color based on the parameter passed in.
         trail.emitterShape = geometry //4 uses the geometry parameter to specify the emitter’s shape
         return trail //5 returns newly created particle system
+    }//end of createTrail
+    
+    func setupHUD() { //func that takes advantage of the GameHelper.swift
+        game.hudNode.position = SCNVector3(x:0.0, y:10.0, z:0.0)
+        scnScene.rootNode.addChildNode(game.hudNode)
+    }
+    
+    func handleTouchFor(node: SCNNode) {//this func checks the touched node, update the score and lives
+        if node.name == "GOOD"{
+            game.score += 1
+            createExplosion(geometry: node.geometry!,
+                            position: node.presentation.position,
+                            rotation: node.presentation.rotation)
+            node.removeFromParentNode()
+        } else if node.name == "BAD"{
+            game.lives -= 1
+            createExplosion(geometry: node.geometry!,
+                            position: node.presentation.position,
+                            rotation: node.presentation.rotation)
+            node.removeFromParentNode()
+        }
+    }
+    
+    //touchesBegan
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        let touch = touches.first! //1 Grab the first available touch. There can be more than one if the player uses multiple fingers.
+        let location = touch.location(in: scnView)//2 Translate the touch location to a location relative to the coordinates of scnView.
+        let hitResults = scnView.hitTest(location, options: nil) //3 hitTest(_: options:) gives you an array of SCNHitTestResult objects that represent any intersections of the ray starting from the spot inside the view the user touched, and going away from the camera.
+        if let result = hitResults.first {//4 Check the first result from the hit test.
+            handleTouchFor(node: result.node)//5 pass the first result node to your touch handler, which either increase your score or cost you a life!
+        }
+    }
+    
+    //1 createExplosion(_: position: rotation:) takes three parameters: geometry defines the shape of the particle effect, while position and rotation help place the explosion into the scene.
+    func createExplosion(geometry: SCNGeometry, position: SCNVector3, rotation:SCNVector4) {
+        let explosion = SCNParticleSystem(named: "Explode.scnp", inDirectory: nil)! //2 This loads Explode.scnp and uses it to create an emitter. The emitter uses geometry as emitterShape so the particles will emit from the surface of the shape.
+        explosion.emitterShape = geometry
+        explosion.birthLocation = .surface
+        //3 Enter the Matrix! :] Don’t be scared by these three lines; they simply provide a combined rotation and position (or translation) transformation matrix to addParticleSystem(_: withTransform:).
+        let rotationMatrix = SCNMatrix4MakeRotation(rotation.w, rotation.x, rotation.y, rotation.z)
+        let translationMatrix = SCNMatrix4MakeTranslation(position.x, position.y, position.z)
+        let transformMatrix = SCNMatrix4Mult(rotationMatrix, translationMatrix)
+        scnScene.addParticleSystem(explosion, transform: transformMatrix) //4 call addParticleSystem(_: wtihTransform) on scnScene to add the explosion to the scene.
     }
 
 }
@@ -140,6 +192,9 @@ extension GameViewController:SCNSceneRendererDelegate {
             //-2 After you spawn an object, update spawnTime with the next time to spawn a new object. The next spawn time is simply the current time incremented by a random amount. Since TimeInterval is in seconds, you spawn the next object between 0.2 seconds and 1.5 seconds after the current time.
             spawnTime = time + TimeInterval(Float.random(min: 0.2, max:1.2))
         }
+        
+        game.updateHUD()
+        
         cleanScene() //to remove the node
         //Before the view can call this delegate method, it first needs to know that GameViewController will act as the delegate for the view. Done by adding scnView.delegate = self to setUpView
     }
