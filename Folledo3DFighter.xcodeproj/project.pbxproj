@@ -7,9 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		CD0137D7202A383200E934D0 /* spark.png in Resources */ = {isa = PBXBuildFile; fileRef = CD0137D5202A383200E934D0 /* spark.png */; };
-		CD0137D8202A383200E934D0 /* Trail.scnp in Resources */ = {isa = PBXBuildFile; fileRef = CD0137D6202A383200E934D0 /* Trail.scnp */; };
-		CD0137DA202A93C200E934D0 /* Explode.scnp in Resources */ = {isa = PBXBuildFile; fileRef = CD0137D9202A93C200E934D0 /* Explode.scnp */; };
 		CD073D831FEC7DE3007B4B33 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD073D821FEC7DE3007B4B33 /* AppDelegate.swift */; };
 		CD073D871FEC7DE3007B4B33 /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD073D861FEC7DE3007B4B33 /* GameViewController.swift */; };
 		CD073D8A1FEC7DE3007B4B33 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CD073D881FEC7DE3007B4B33 /* Main.storyboard */; };
@@ -24,12 +21,12 @@
 		CD5805CD1FF88E9A005B5D3F /* Float+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD5805C61FF88E9A005B5D3F /* Float+Extensions.swift */; };
 		CD5805CE1FF88E9A005B5D3F /* Double+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = CD5805C71FF88E9A005B5D3F /* Double+Extensions.swift */; };
 		CDD18B2D1FF179EF00A1B622 /* GeometryFighter.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = CDD18B2C1FF179EF00A1B622 /* GeometryFighter.scnassets */; };
+		CDFFCD28205E364B002893B6 /* Explode.scnp in Resources */ = {isa = PBXBuildFile; fileRef = CDFFCD25205E364B002893B6 /* Explode.scnp */; };
+		CDFFCD29205E364B002893B6 /* spark.png in Resources */ = {isa = PBXBuildFile; fileRef = CDFFCD26205E364B002893B6 /* spark.png */; };
+		CDFFCD2A205E364B002893B6 /* Trail.scnp in Resources */ = {isa = PBXBuildFile; fileRef = CDFFCD27205E364B002893B6 /* Trail.scnp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		CD0137D5202A383200E934D0 /* spark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = spark.png; path = ../../../../Documents/spark.png; sourceTree = "<group>"; };
-		CD0137D6202A383200E934D0 /* Trail.scnp */ = {isa = PBXFileReference; lastKnownFileType = file.scp; name = Trail.scnp; path = ../../../../Documents/Trail.scnp; sourceTree = "<group>"; };
-		CD0137D9202A93C200E934D0 /* Explode.scnp */ = {isa = PBXFileReference; lastKnownFileType = file.scp; name = Explode.scnp; path = ../../../../Documents/Explode.scnp; sourceTree = "<group>"; };
 		CD073D7F1FEC7DE3007B4B33 /* Folledo3DFighter.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Folledo3DFighter.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CD073D821FEC7DE3007B4B33 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CD073D861FEC7DE3007B4B33 /* GameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewController.swift; sourceTree = "<group>"; };
@@ -46,6 +43,9 @@
 		CD5805C61FF88E9A005B5D3F /* Float+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Float+Extensions.swift"; sourceTree = "<group>"; };
 		CD5805C71FF88E9A005B5D3F /* Double+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Double+Extensions.swift"; sourceTree = "<group>"; };
 		CDD18B2C1FF179EF00A1B622 /* GeometryFighter.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = GeometryFighter.scnassets; sourceTree = "<group>"; };
+		CDFFCD25205E364B002893B6 /* Explode.scnp */ = {isa = PBXFileReference; lastKnownFileType = file.scp; path = Explode.scnp; sourceTree = "<group>"; };
+		CDFFCD26205E364B002893B6 /* spark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = spark.png; sourceTree = "<group>"; };
+		CDFFCD27205E364B002893B6 /* Trail.scnp */ = {isa = PBXFileReference; lastKnownFileType = file.scp; path = Trail.scnp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -59,20 +59,9 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		CD0137D2202A370200E934D0 /* Particles */ = {
-			isa = PBXGroup;
-			children = (
-				CD0137D5202A383200E934D0 /* spark.png */,
-				CD0137D6202A383200E934D0 /* Trail.scnp */,
-				CD0137D9202A93C200E934D0 /* Explode.scnp */,
-			);
-			path = Particles;
-			sourceTree = "<group>";
-		};
 		CD073D761FEC7DE3007B4B33 = {
 			isa = PBXGroup;
 			children = (
-				CD0137D2202A370200E934D0 /* Particles */,
 				CD073D811FEC7DE3007B4B33 /* Folledo3DFighter */,
 				CD073D801FEC7DE3007B4B33 /* Products */,
 			);
@@ -90,6 +79,9 @@
 			isa = PBXGroup;
 			children = (
 				CD073D821FEC7DE3007B4B33 /* AppDelegate.swift */,
+				CDFFCD25205E364B002893B6 /* Explode.scnp */,
+				CDFFCD26205E364B002893B6 /* spark.png */,
+				CDFFCD27205E364B002893B6 /* Trail.scnp */,
 				CD5805C01FF88E9A005B5D3F /* GameUtils */,
 				CDD18B2C1FF179EF00A1B622 /* GeometryFighter.scnassets */,
 				CD073D861FEC7DE3007B4B33 /* GameViewController.swift */,
@@ -175,12 +167,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CD0137D7202A383200E934D0 /* spark.png in Resources */,
 				CD073D8F1FEC7DE3007B4B33 /* LaunchScreen.storyboard in Resources */,
+				CDFFCD29205E364B002893B6 /* spark.png in Resources */,
+				CDFFCD2A205E364B002893B6 /* Trail.scnp in Resources */,
+				CDFFCD28205E364B002893B6 /* Explode.scnp in Resources */,
 				CD073D8C1FEC7DE3007B4B33 /* Assets.xcassets in Resources */,
 				CD073D8A1FEC7DE3007B4B33 /* Main.storyboard in Resources */,
-				CD0137D8202A383200E934D0 /* Trail.scnp in Resources */,
-				CD0137DA202A93C200E934D0 /* Explode.scnp in Resources */,
 				CDD18B2D1FF179EF00A1B622 /* GeometryFighter.scnassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
